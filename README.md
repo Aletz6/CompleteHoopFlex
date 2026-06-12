@@ -8,7 +8,7 @@
  ├── hoopflex-backend/      # FastAPI Backend
  ├── docker-compose.yml     # Orquestación de servicios
  ├── .github/
- │   └── workflows/         # Workflows: backend-ci.yml, frontend-ci.yml, docker-build.yml
+ │   └── workflows/         # Workflows: backend-ci.yml, frontend-ci.yml
  └── Makefile               # Comandos útiles
  ```
 
@@ -68,7 +68,6 @@
  He añadido workflows básicos en `.github/workflows/`:
  - `frontend-ci.yml` — valida Yarn (lint/format) cuando se tocan archivos en `HoopFlex/`.
  - `backend-ci.yml` — ejecuta `pytest` cuando se tocan archivos en `hoopflex-backend/`.
- - `docker-build.yml` — (opcional) construye y publica una imagen Docker en `main`.
 
  Todos los workflows soportan ejecución manual (`workflow_dispatch`) y usan caché de dependencias para acelerar runs.
 
@@ -78,13 +77,8 @@
 
  ### Cómo ejecutar manualmente
  1. Ve a la pestaña **Actions** en GitHub.
- 2. Selecciona el workflow (`Backend CI`, `Frontend CI` o `Build and push Docker image (optional)`).
+ 2. Selecciona el workflow (`Backend CI` o `Frontend CI`).
  3. Pulsa **Run workflow**.
-
- ### Secrets (para Docker publish)
- - `DOCKERHUB_USERNAME`
- - `DOCKERHUB_TOKEN`
- Añádelos en Settings → Secrets → Actions si quieres usar `docker-build.yml`.
 
  ## 📝 Crear el repo en GitHub (opcional)
 
@@ -92,9 +86,8 @@
 
  ```powershell
  cd C:\Users\Ale23\CompleteHoopFlex
- git init
  git add .
- git commit -m "chore(ci): add GitHub Actions workflows and docs"
+ git commit -m "chore: setup CI/CD workflows"
  gh repo create CompleteHoopFlex --public --source=. --remote=origin --confirm
  git push -u origin HEAD
  ```
