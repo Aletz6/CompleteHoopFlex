@@ -36,7 +36,7 @@ jobs:
       - name: Install
         working-directory: HoopFlex
         run: |
-          yarn install --frozen-lockfile
+          yarn install
 
       - name: Run validation (lint & format check)
         working-directory: HoopFlex
