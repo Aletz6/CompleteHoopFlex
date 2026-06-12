@@ -1,180 +1,135 @@
-# HoopFlex - Monorepo (Frontend + Backend)
+ # CompleteHoopFlex — Monorepo (Frontend + Backend)
 
-## 📁 Estructura del Proyecto
+ ## 📁 Estructura del Proyecto
 
-```
-CompleteHoopFlex/
-├── HoopFlex/              # React Native Frontend (Expo)
-│   ├── package.json
-│   ├── .eslintrc.json
-│   ├── .prettierrc.json
-│   └── ...
-├── hoopflex-backend/      # FastAPI Backend
-│   ├── requirements.txt
-│   ├── main.py
-│   ├── Dockerfile
-│   ├── pytest.ini
-│   └── ...
-├── docker-compose.yml     # Orchestración de servicios
-├── .github/
-│   └── workflows/
-│       └── ci.yml         # CI/CD Pipeline
-└── Makefile               # Comandos útiles
-```
+ ```
+ CompleteHoopFlex/
+ ├── HoopFlex/              # React Native Frontend (Expo)
+ ├── hoopflex-backend/      # FastAPI Backend
+ ├── docker-compose.yml     # Orquestación de servicios
+ ├── .github/
+ │   └── workflows/         # Workflows: backend-ci.yml, frontend-ci.yml, docker-build.yml
+ └── Makefile               # Comandos útiles
+ ```
 
-## 🚀 Quick Start
+ ## 🚀 Quick Start
 
-### Frontend (React Native)
+ ### Frontend (React Native — Yarn)
 
-```bash
-cd HoopFlex
-npm install
-npm start
-```
+ ```bash
+ cd HoopFlex
+ yarn install --frozen-lockfile
+ yarn start
+ ```
 
-### Backend (FastAPI)
+ ### Backend (FastAPI)
 
-```bash
-cd hoopflex-backend
-pip install -r requirements.txt
-python -m uvicorn main:app --reload
-```
+ ```bash
+ cd hoopflex-backend
+ pip install -r requirements.txt
+ python -m uvicorn main:app --reload
+ ```
 
-### Con Docker Compose (Ambos)
+ ### Con Docker Compose (Ambos)
 
-```bash
-docker-compose up --build
-```
+ ```bash
+ docker-compose up --build
+ ```
 
-- Frontend: http://localhost:3000 (web)
-- Backend: http://localhost:8000
-- API Docs: http://localhost:8000/docs
+ - Frontend (web): http://localhost:3000
+ - Backend: http://localhost:8000
+ - API Docs: http://localhost:8000/docs
 
-## 🧪 Testing
+ ## 🧪 Testing
 
-### Frontend
+ ### Frontend
 
-```bash
-cd HoopFlex
-npm run lint          # ESLint
-npm run lint:fix      # Fix issues
-npm run format        # Prettier
-npm run validate      # Lint + Format check
-```
+ ```bash
+ cd HoopFlex
+ yarn validate        # lint + format check
+ yarn lint            # eslint
+ yarn lint:fix        # fix eslint
+ yarn format          # prettier
+ ```
 
-### Backend
+ ### Backend
 
-```bash
-cd hoopflex-backend
-pytest                           # Run tests
-pytest --cov                     # With coverage
-black .                          # Format
-flake8 .                         # Lint
-bandit -r .                      # Security check
-```
+ ```bash
+ cd hoopflex-backend
+ pytest -q                        # Run tests
+ pytest --cov                     # With coverage
+ black .                          # Format
+ flake8 .                         # Lint
+ bandit -r .                      # Security check
+ ```
 
-## 🔄 CI/CD Pipeline
+ ## 🔄 CI/CD (GitHub Actions)
 
-El archivo `.github/workflows/ci.yml` ejecuta automáticamente:
+ He añadido workflows básicos en `.github/workflows/`:
+ - `frontend-ci.yml` — valida Yarn (lint/format) cuando se tocan archivos en `HoopFlex/`.
+ - `backend-ci.yml` — ejecuta `pytest` cuando se tocan archivos en `hoopflex-backend/`.
+ - `docker-build.yml` — (opcional) construye y publica una imagen Docker en `main`.
 
-### Frontend Jobs (Paralelos)
-- ✅ Lint & Format con ESLint y Prettier
-- ✅ Build check
-- ✅ Security audit con npm audit
+ Todos los workflows soportan ejecución manual (`workflow_dispatch`) y usan caché de dependencias para acelerar runs.
 
-### Backend Jobs (Paralelos)
-- ✅ Tests con pytest
-- ✅ Code formatting check (Black)
-- ✅ Linting (Flake8)
-- ✅ Security check (Bandit)
-- ✅ Build verification
-- ✅ Coverage report
+ ### Triggers
+ - `push` y `pull_request` sobre paths relevantes.
+ - `workflow_dispatch` para ejecutar manualmente desde la pestaña Actions.
 
-### Triggers
-- 🔸 `push` a `main` o `develop`
-- 🔸 `pull_request` a `main` o `develop`
+ ### Cómo ejecutar manualmente
+ 1. Ve a la pestaña **Actions** en GitHub.
+ 2. Selecciona el workflow (`Backend CI`, `Frontend CI` o `Build and push Docker image (optional)`).
+ 3. Pulsa **Run workflow**.
 
-## 📋 Requirements
+ ### Secrets (para Docker publish)
+ - `DOCKERHUB_USERNAME`
+ - `DOCKERHUB_TOKEN`
+ Añádelos en Settings → Secrets → Actions si quieres usar `docker-build.yml`.
 
-### Frontend
-- Node.js 18+
-- npm o yarn
+ ## 📝 Crear el repo en GitHub (opcional)
 
-### Backend
-- Python 3.11+
-- MongoDB 5.0+
+ Si quieres crear el repo público `CompleteHoopFlex` desde tu máquina con GitHub CLI (`gh`) y empujar el contenido actual:
 
-### Docker
-- Docker Engine 20.10+
-- Docker Compose 2.0+
+ ```powershell
+ cd C:\Users\Ale23\CompleteHoopFlex
+ git init
+ git add .
+ git commit -m "chore(ci): add GitHub Actions workflows and docs"
+ gh repo create CompleteHoopFlex --public --source=. --remote=origin --confirm
+ git push -u origin HEAD
+ ```
 
-## 📝 Configuración Local
+ Si no usas `gh`, crea el repo en github.com y luego:
 
-### Variables de Ambiente
+ ```bash
+ git remote add origin git@github.com:TU_USUARIO/CompleteHoopFlex.git
+ git push -u origin HEAD
+ ```
 
-**Backend** (`hoopflex-backend/.env`):
-```env
-MONGODB_URL=mongodb://localhost:27017/hoopflex
-DEBUG=True
-LOG_LEVEL=INFO
-```
+ ## 📚 Recursos y logs
+ - Los logs y detalles de cada ejecución están disponibles en la pestaña **Actions** → seleccionar run → ver steps.
+ - `CI_CD.md` contiene instrucciones específicas sobre los workflows.
 
-**Frontend** (`HoopFlex/.env`):
-```env
-REACT_NATIVE_BACKEND_URL=http://localhost:8000
-EXPO_PUBLIC_API_URL=http://localhost:8000
-```
+ ## 🛠️ Troubleshooting (rápido)
 
-## 🔐 Git Workflow
+ - MongoDB no conecta:
+ ```bash
+ docker-compose down -v
+ docker-compose up -d mongodb
+ ```
 
-1. Crea una rama para tu feature:
-   ```bash
-   git checkout -b feature/my-feature
-   ```
+ - Puerto 8000 en uso:
+ ```bash
+ lsof -i :8000
+ kill -9 <PID>
+ ```
 
-2. Realiza cambios y commit:
-   ```bash
-   git add .
-   git commit -m "feat: descripción"
-   ```
+ - Limpiar caché frontend/backend:
+ ```bash
+ cd HoopFlex && yarn cache clean && yarn install --frozen-lockfile
+ cd hoopflex-backend && rm -rf __pycache__ .pytest_cache
+ ```
 
-3. Push a GitHub:
-   ```bash
-   git push origin feature/my-feature
-   ```
+ ---
 
-4. Abre Pull Request y espera a que CI/CD pase ✅
-
-## 📚 Documentación Adicional
-
-- [OFFLINE_SYNC_FASTAPI.md](./OFFLINE_SYNC_FASTAPI.md) - Sync contract
-- [FastAPI Docs](http://localhost:8000/docs) - API documentation (en local)
-- [Expo Docs](https://docs.expo.dev/)
-
-## 🛠️ Troubleshooting
-
-### MongoDB no conecta
-```bash
-docker-compose down -v
-docker-compose up -d mongodb
-```
-
-### Puerto 8000 en uso
-```bash
-lsof -i :8000
-kill -9 <PID>
-```
-
-### Limpiar caché
-```bash
-cd HoopFlex && npm run reset
-cd hoopflex-backend && rm -rf __pycache__ .pytest_cache
-```
-
----
-
-**¿Necesitas ayuda?** Revisa los logs:
-```bash
-docker-compose logs -f
-```
-"# CompleteHoopFlex" 
+ Si quieres, puedo ejecutar por ti los comandos para crear el repo y empujar los cambios (necesito que `gh` esté instalado y autenticado), o generarte un script para ejecutarlo localmente.
