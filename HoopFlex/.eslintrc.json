@@ -2,8 +2,7 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "node": true,
-    "react-native/react-native": true
+    "node": true
   },
   "extends": [
     "eslint:recommended"
@@ -16,8 +15,7 @@
     }
   },
   "plugins": [
-    "react",
-    "react-native"
+    "react"
   ],
   "rules": {
     "indent": ["error", 2],
@@ -26,7 +24,6 @@
     "semi": ["error", "always"],
     "no-unused-vars": ["warn"],
     "no-console": ["warn"],
-    "react/react-in-jsx-scope": "off",
-    "react-native/no-unused-styles": "warn"
+    "react/react-in-jsx-scope": "off"
   }
 }
