@@ -3,6 +3,7 @@ uvicorn
 pymongo
 pydantic
 python-multipart
+httpx
 pytest
 pytest-cov
 black
