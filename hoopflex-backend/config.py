@@ -1,6 +1,10 @@
 from pymongo import MongoClient
+import os
 
-client = MongoClient("mongodb+srv://hoopflex:kamikazi@hoopflex.cxtvprh.mongodb.net/?appName=HoopFlex")
+mongo_uri = os.getenv("MONGO_URI")
+
+client = MongoClient(mongo_uri)
+
 db = client["hoopflex"]
 
 collection_logs = db["trainingLogs"]
