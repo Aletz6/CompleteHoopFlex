@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-client = MongoClient("mongodb://localhost:27017")
+client = MongoClient("mongodb+srv://hoopflex:kamikazi@hoopflex.cxtvprh.mongodb.net/?appName=HoopFlex")
 db = client["hoopflex"]
 
 collection_logs = db["trainingLogs"]
