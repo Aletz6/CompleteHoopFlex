@@ -1,11 +1,11 @@
 from datetime import datetime
-from pymongo import MongoClient
 
-client = MongoClient("mongodb://localhost:27017")
-db = client["hoopflex"]
-collection_logs = db["trainingLogs"]
-collection_achievements = db["achievements"]
-collection_unlocked = db["unlockedAchievements"]
+
+from config import (
+    collection_logs,
+    collection_achievements,
+    collection_unlocked
+)
 
 class AchievementUnlocker:
 
