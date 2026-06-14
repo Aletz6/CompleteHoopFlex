@@ -2,7 +2,7 @@ import axios from "axios";
 import { getFirebaseToken } from "./FirebaseService"; 
 
 const api = axios.create({
-  baseURL: "http://192.168.100.15:8000", 
+  baseURL: "https://hoopflex-api.onrender.com", 
   timeout: 10000 
 });
 
