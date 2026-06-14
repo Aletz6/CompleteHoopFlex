@@ -2,12 +2,9 @@ name: Build HoopFlex APK
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 jobs:
-  build:
+  build-apk:
     runs-on: ubuntu-latest
 
     defaults:
@@ -15,34 +12,42 @@ jobs:
         working-directory: HoopFlex
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      - name: Install Yarn
+        run: npm install -g yarn
+
       - name: Install dependencies
         run: yarn install
 
-      - name: Setup Expo
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install Expo CLI
         run: npm install -g expo-cli
 
-      - name: Install EAS
-        run: npm install -g eas-cli
+      - name: Generate Android project
+        run: npx expo prebuild --platform android --non-interactive
 
-      - name: Generate Android Project
-        run: npx expo prebuild --platform android
+      - name: Grant Gradle permissions
+        run: chmod +x android/gradlew
 
       - name: Build APK
         run: |
           cd android
-          chmod +x gradlew
           ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: hoopflex-apk
+          name: HoopFlex-APK
           path: HoopFlex/android/app/build/outputs/apk/debug/app-debug.apk
